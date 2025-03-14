@@ -12,22 +12,58 @@
     <ul id="todoList"></ul>
 
     <script>
-      function addItem() {
+      const API_URL = "http://localhost:8000";
+
+      async function fetchTodos() {
+        const response = await fetch(`${API_URL}/todos`);
+        const todos = await response.json();
+        const list = document.getElementById("todoList");
+        list.innerHTML = "";
+        todos.forEach((todo) => addTodoToList(todo));
+      }
+
+      async function addItem() {
         const input = document.getElementById("newItem");
+        const content = input.value.trim();
+        if (!content) return;
+
+        const response = await fetch(`${API_URL}/todos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content }),
+        });
+
+        if (response.ok) {
+          const newTodo = await response.json();
+          addTodoToList(newTodo);
+          input.value = "";
+        }
+      }
+
+      async function deleteItem(todoId, li) {
+        const response = await fetch(`${API_URL}/todos/${todoId}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          li.remove();
+        }
+      }
+
+      function addTodoToList(todo) {
         const list = document.getElementById("todoList");
         const li = document.createElement("li");
-        li.textContent = input.value;
+        li.textContent = todo.content;
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
-        deleteBtn.onclick = function () {
-          list.removeChild(li);
-        };
+        deleteBtn.onclick = () => deleteItem(todo.id, li);
 
         li.appendChild(deleteBtn);
         list.appendChild(li);
-        input.value = "";
       }
+
+      window.onload = fetchTodos;
     </script>
   </body>
 </html>

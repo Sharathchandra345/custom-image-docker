@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+env/
+.env
+
+# FastAPI & Dependencies
+*.db
+instance/
+*.sqlite
+*.sqlite3
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+migrations/
+
+# Node.js (if frontend uses Node)
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+docker-volume/
+*.tar
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs & Temporary Files
+logs/
+*.log
+*.pid
+*.seed
+*.bak
